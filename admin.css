@@ -1,0 +1,38 @@
+
+:root{
+  --ink:#0b1220; --muted:#6b7280; --brand:#0f766e; --accent:#f59e0b; --border:#e5e7eb;
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#f8fafc; --shadow:0 10px 24px rgba(2,6,23,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+a{color:var(--brand);text-decoration:none}
+.container{width:min(1100px,92%);margin-inline:auto}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:20}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;color:#111}
+.badge{font-size:12px;padding:2px 8px;border-radius:999px;background:rgba(15,118,110,.12);color:#0f766e;font-weight:800}
+
+.login-wrap{min-height:100vh;display:grid;place-items:center;background:linear-gradient(180deg,#fff,#f8fafc)}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:22px;width:min(420px,92%)}
+.card h1{margin:0 0 6px}
+.form-row{display:grid;margin:10px 0}
+input,textarea,select{border:1px solid var(--border);border-radius:10px;padding:12px;font:inherit}
+.btn{display:inline-block;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:#fff;font-weight:700;box-shadow:var(--shadow)}
+.btn--primary{background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff;border-color:transparent}
+.btn--small{padding:8px 12px;border-radius:10px;font-size:14px}
+
+.grid{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{border-right:1px solid var(--border);padding:16px;position:sticky;top:0;height:100vh}
+.sidebar a{display:block;padding:10px 12px;border-radius:10px;margin-bottom:6px;color:#111;font-weight:600}
+.sidebar a.active, .sidebar a:hover{background:#f1f5f9}
+
+.main{padding:18px}
+.h1{font-size:24px;margin:0 0 10px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.table th,.table td{border-bottom:1px solid var(--border);padding:10px;text-align:left;font-size:14px}
+.table tr:nth-child(even){background:#fafafa}
+
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kv .form-row{margin:0}
+.notice{font-size:13px;color:var(--muted)}
+footer{border-top:1px solid var(--border);padding:12px 0;color:var(--muted);margin-top:28px}

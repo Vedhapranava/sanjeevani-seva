@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Sanjeevani Seva</title>
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+<div class="grid">
+  <aside class="sidebar">
+    <div class="logo">ॐ <span>Sanjeevani Seva</span></div>
+    <a href="#services" class="active">Services</a>
+    <a href="#network">Network</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#leads">Leads</a>
+    <hr>
+    <a href="#" id="logout">Logout</a>
+  </aside>
+  <main class="main">
+    <h1 class="h1">Admin Dashboard</h1>
+    <p class="notice">Content is stored in SQLite. You are signed in if you can see data below.</p>
+
+    <section id="panel-services">
+      <h2>Services</h2>
+      <form id="serviceForm" class="card kv">
+        <div class="form-row"><label>Title</label><input type="text" name="title" required></div>
+        <div class="form-row"><label>Category</label>
+          <select name="category">
+            <option>Surgeries</option><option>Diagnostics</option>
+            <option>Dialysis & Treatments</option><option>Health Checkups</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Bullets (comma separated)</label><input type="text" name="bullets" placeholder="IOL included, Daycare possible"></div>
+        <div class="form-row"><button class="btn btn--primary" type="submit">Save</button></div>
+      </form>
+      <table class="table" id="servicesTable">
+        <thead><tr><th>#</th><th>Title</th><th>Category</th><th>Bullets</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="panel-network" style="display:none">
+      <h2>Network</h2>
+      <form id="networkForm" class="card kv">
+        <div class="form-row"><label>Name</label><input type="text" name="name" required></div>
+        <div class="form-row"><label>City</label><input type="text" name="city" required></div>
+        <div class="form-row"><label>Meta</label><input type="text" name="meta" placeholder="MRI, CT, Lab"></div>
+        <div class="form-row"><button class="btn btn--primary" type="submit">Save</button></div>
+      </form>
+      <table class="table" id="networkTable">
+        <thead><tr><th>#</th><th>Name</th><th>City</th><th>Meta</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="panel-testimonials" style="display:none">
+      <h2>Testimonials</h2>
+      <form id="testiForm" class="card">
+        <div class="form-row"><label>Quote</label><textarea name="quote" required></textarea></div>
+        <div class="form-row"><label>Author</label><input type="text" name="author" placeholder="— Name, City" required></div>
+        <div class="form-row"><button class="btn btn--primary" type="submit">Save</button></div>
+      </form>
+      <table class="table" id="testiTable">
+        <thead><tr><th>#</th><th>Quote</th><th>Author</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="panel-leads" style="display:none">
+      <h2>Leads</h2>
+      <table class="table" id="leadsTable">
+        <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Need</th><th>Message</th><th>Created</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <footer>© <span id="y"></span> Sanjeevani Seva Admin</footer>
+  </main>
+</div>
+
+<script>
+async function guard(){
+  const me = await fetch('/api/auth/me'); const j = await me.json();
+  if(!j.authenticated){ location.href = '/admin/login.html'; }
+}
+guard();
+
+document.getElementById('y').textContent = new Date().getFullYear();
+
+// Tabs
+const links = Array.from(document.querySelectorAll('.sidebar a[href^="#"]'));
+const panels = {
+  services: document.getElementById('panel-services'),
+  network: document.getElementById('panel-network'),
+  testimonials: document.getElementById('panel-testimonials'),
+  leads: document.getElementById('panel-leads'),
+};
+function showTab(name){
+  Object.values(panels).forEach(p=>p.style.display='none');
+  (panels[name]||panels.services).style.display='block';
+  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+name));
+}
+window.addEventListener('hashchange', ()=> showTab(location.hash.replace('#','')||'services'));
+showTab(location.hash.replace('#','')||'services');
+
+// Logout
+document.getElementById('logout').onclick = async (e)=>{
+  e.preventDefault();
+  await fetch('/api/auth/logout', {method:'POST'});
+  location.href = '/admin/login.html';
+}
+
+// Services CRUD
+const sForm = document.getElementById('serviceForm');
+const sTable = document.querySelector('#servicesTable tbody');
+let sEditId = null;
+
+async function loadServices(){
+  const res = await fetch('/api/services'); const rows = await res.json();
+  sTable.innerHTML = rows.map(r=>`
+    <tr>
+      <td>${r.id}</td>
+      <td>${r.title}</td>
+      <td>${r.category}</td>
+      <td>${(JSON.parse(r.bullets||'[]')||[]).join(' • ')}</td>
+      <td>
+        <a href="#" data-edit="${r.id}">Edit</a> |
+        <a href="#" data-del="${r.id}">Delete</a>
+      </td>
+    </tr>`).join('');
+}
+sForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(sForm).entries());
+  const method = sEditId ? 'PATCH' : 'POST';
+  const url = sEditId ? `/api/services/${sEditId}` : '/api/services';
+  data.bullets = data.bullets;
+  const r = await fetch(url, {method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!r.ok){ alert('Failed'); return; }
+  sEditId = null; sForm.reset(); loadServices();
+});
+sTable.addEventListener('click', async (e)=>{
+  const id = e.target.getAttribute('data-del') || e.target.getAttribute('data-edit');
+  if(!id) return;
+  e.preventDefault();
+  if(e.target.hasAttribute('data-del')){
+    if(!confirm('Delete this item?')) return;
+    await fetch(`/api/services/${id}`, {method:'DELETE'}); loadServices();
+  } else {
+    // fetch current and prefill
+    const rows = await (await fetch('/api/services')).json();
+    const row = rows.find(x=>x.id==id);
+    if(!row) return;
+    sEditId = id;
+    sForm.title.value = row.title;
+    sForm.category.value = row.category;
+    const bullets = JSON.parse(row.bullets||'[]');
+    sForm.bullets.value = bullets.join(', ');
+  }
+});
+
+// Network CRUD
+const nForm = document.getElementById('networkForm');
+const nTable = document.querySelector('#networkTable tbody');
+let nEditId = null;
+async function loadNetwork(){
+  const res = await fetch('/api/network'); const rows = await res.json();
+  nTable.innerHTML = rows.map(r=>`
+    <tr>
+      <td>${r.id}</td><td>${r.name}</td><td>${r.city}</td><td>${r.meta||''}</td>
+      <td><a href="#" data-nedit="${r.id}">Edit</a> | <a href="#" data-ndel="${r.id}">Delete</a></td>
+    </tr>`).join('');
+}
+nForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(nForm).entries());
+  const method = nEditId ? 'PATCH' : 'POST';
+  const url = nEditId ? `/api/network/${nEditId}` : '/api/network';
+  const r = await fetch(url, {method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!r.ok){ alert('Failed'); return; }
+  nEditId = null; nForm.reset(); loadNetwork();
+});
+nTable.addEventListener('click', async (e)=>{
+  const id = e.target.getAttribute('data-ndel') || e.target.getAttribute('data-nedit');
+  if(!id) return;
+  e.preventDefault();
+  if(e.target.hasAttribute('data-ndel')){
+    if(!confirm('Delete this item?')) return;
+    await fetch(`/api/network/${id}`, {method:'DELETE'}); loadNetwork();
+  } else {
+    const rows = await (await fetch('/api/network')).json();
+    const row = rows.find(x=>x.id==id);
+    if(!row) return;
+    nEditId = id;
+    nForm.name.value = row.name;
+    nForm.city.value = row.city;
+    nForm.meta.value = row.meta || '';
+  }
+});
+
+// Testimonials CRUD
+const tForm = document.getElementById('testiForm');
+const tTable = document.querySelector('#testiTable tbody');
+let tEditId = null;
+async function loadTestimonials(){
+  const res = await fetch('/api/testimonials'); const rows = await res.json();
+  tTable.innerHTML = rows.map(r=>`
+    <tr>
+      <td>${r.id}</td><td>${r.quote}</td><td>${r.author}</td>
+      <td><a href="#" data-tedit="${r.id}">Edit</a> | <a href="#" data-tdel="${r.id}">Delete</a></td>
+    </tr>`).join('');
+}
+tForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(tForm).entries());
+  const method = tEditId ? 'PATCH' : 'POST';
+  const url = tEditId ? `/api/testimonials/${tEditId}` : '/api/testimonials';
+  const r = await fetch(url, {method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!r.ok){ alert('Failed'); return; }
+  tEditId = null; tForm.reset(); loadTestimonials();
+});
+tTable.addEventListener('click', async (e)=>{
+  const id = e.target.getAttribute('data-tdel') || e.target.getAttribute('data-tedit');
+  if(!id) return;
+  e.preventDefault();
+  if(e.target.hasAttribute('data-tdel')){
+    if(!confirm('Delete this item?')) return;
+    await fetch(`/api/testimonials/${id}`, {method:'DELETE'}); loadTestimonials();
+  } else {
+    const rows = await (await fetch('/api/testimonials')).json();
+    const row = rows.find(x=>x.id==id);
+    if(!row) return;
+    tEditId = id;
+    tForm.quote.value = row.quote;
+    tForm.author.value = row.author;
+  }
+});
+
+// Leads (read-only)
+async function loadLeads(){
+  const res = await fetch('/api/leads'); 
+  if(!res.ok){ return; }
+  const rows = await res.json();
+  const tbody = document.querySelector('#leadsTable tbody');
+  tbody.innerHTML = rows.map((r,i)=>`
+    <tr>
+      <td>${i+1}</td><td>${r.name||''}</td><td>${r.phone||''}</td><td>${r.need||''}</td><td>${r.message||''}</td><td>${r.created_at}</td>
+    </tr>`).join('');
+}
+
+// Initial loads
+loadServices(); loadNetwork(); loadTestimonials(); loadLeads();
+</script>
+</body>
+</html>

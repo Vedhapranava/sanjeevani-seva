@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sanjeevani Seva</title>
+  <meta name="description" content="Sanjeevani Seva — Affordable, guided access to surgeries, diagnostics, dialysis and checkups.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script defer src="assets/js/main.js"></script>
+</head>
+<body>
+<header class="site-header" data-reveal>
+  <div class="container header-inner">
+    <a class="logo" href="/">
+      <span class="logo-mark">ॐ</span>
+      <span class="logo-text">Sanjeevani Seva</span>
+    </a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/services.html">Services</a>
+      <a href="/network.html">Network</a>
+      <a href="/contact.html" class="btn btn--small">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<main>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-text" data-reveal>
+      <p class="eyebrow devanagari">संजīvani सेवा</p>
+      <h1>Bridging Families to <span class="grad">Affordable, Quality Care</span></h1>
+      <p class="lead">Surgery quotes, diagnostics discounts, dialysis guidance — speak to an advisor who compares options and books for you.</p>
+      <div class="cta-row">
+        <a class="btn btn--primary pulse" href="tel:+91 98765 43210">Call Helpline: +91 98765 43210</a>
+        <a class="btn" href="/contact.html">Request a Callback</a>
+      </div>
+      <div class="stats">
+        <div><strong>5+</strong><span>Years of Network</span></div>
+        <div><strong>40+</strong><span>Partner Hospitals</span></div>
+        <div><strong>10k+</strong><span>Patients Guided</span></div>
+      </div>
+    </div>
+    <div class="hero-art floating" aria-hidden="true" data-reveal>
+      <svg viewBox="0 0 300 300" role="img" aria-label="Abstract healthcare art">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="var(--brand-500)"/>
+            <stop offset="100%" stop-color="var(--accent-500)"/>
+          </linearGradient>
+        </defs>
+        <circle cx="150" cy="150" r="120" fill="url(#g1)" opacity="0.18"/>
+        <rect x="60" y="60" width="180" height="180" rx="24" fill="url(#g1)" opacity="0.28"/>
+        <g fill="none" stroke="url(#g1)" stroke-width="2" opacity="0.7">
+          <path d="M30 150 H270 M150 30 V270" />
+          <circle cx="150" cy="150" r="80" />
+          <circle cx="150" cy="150" r="40" />
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="about split">
+  <div class="container split-inner">
+    <div data-reveal>
+      <img class="rounded" src="/assets/img/about-placeholder.svg" alt="Healthcare advisors illustration">
+    </div>
+    <div data-reveal>
+      <p class="eyebrow">ABOUT SANJEEVANI SEVA</p>
+      <h2>Simple Guidance. Real Savings.</h2>
+      <p>We connect you with top hospitals and diagnostic centers, offering negotiated prices on surgeries, tests, and treatments. From angioplasty to dialysis, our team compares options and supports you through booking.</p>
+      <div class="pills">
+        <span>Trusted Network</span>
+        <span class="muted">Patient‑first</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <div class="container">
+    <p class="eyebrow" data-reveal>OUR SERVICES</p>
+    <h2 data-reveal>What We Offer</h2>
+    <div class="card-grid" id="servicesGrid">
+      <!-- will be filled by JS from /api/services -->
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="container">
+    <p class="eyebrow" data-reveal>WHY CHOOSE US</p>
+    <h2 data-reveal>Your Health, Our Dharma</h2>
+    <div class="feature-grid">
+      <div class="feature" data-reveal>
+        <div class="badge">Network</div>
+        <h4>Wide Network</h4>
+        <p>Partnered with reputed hospitals and diagnostics across Telangana.</p>
+      </div>
+      <div class="feature" data-reveal>
+        <div class="badge">Savings</div>
+        <h4>Best Discounts</h4>
+        <p>Negotiated rates and transparent estimates — no hidden fees.</p>
+      </div>
+      <div class="feature" data-reveal>
+        <div class="badge">Clarity</div>
+        <h4>Transparency</h4>
+        <p>Breakups and inclusions explained before you book.</p>
+      </div>
+      <div class="feature" data-reveal>
+        <div class="badge">Support</div>
+        <h4>Personalized Support</h4>
+        <p>Speak to a human advisor from first call to discharge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="network">
+  <div class="container">
+    <p class="eyebrow" data-reveal>HOSPITALS • DIAGNOSTICS • AMBULANCE</p>
+    <h2 data-reveal>Our Network</h2>
+    <div class="chips" id="citiesChips" data-reveal></div>
+    <a class="btn" href="/network.html" data-reveal>Explore Network</a>
+  </div>
+</section>
+
+<section class="process">
+  <div class="container">
+    <p class="eyebrow" data-reveal>OUR PROCESS</p>
+    <h2 data-reveal>How We Work</h2>
+    <ol class="steps">
+      <li data-reveal>
+        <h4>Call Our Helpline</h4>
+        <p>Dial +91 98765 43210 to connect with our healthcare advisors.</p>
+      </li>
+      <li data-reveal>
+        <h4>Define Requirements</h4>
+        <p>Tell us your need — surgery, diagnostic, or treatment.</p>
+      </li>
+      <li data-reveal>
+        <h4>Compare Options</h4>
+        <p>We shortlist best‑fit hospitals and packages from our network.</p>
+      </li>
+      <li data-reveal>
+        <h4>Book Appointment</h4>
+        <p>We coordinate scheduling and share pre‑visit instructions.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="container">
+    <p class="eyebrow" data-reveal>TESTIMONIALS</p>
+    <h2 data-reveal>What Our Customers Say</h2>
+    <div class="slider" data-slider data-reveal id="testimonialsWrap">
+      <!-- JS will inject slides -->
+      <div class="dots"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer" data-reveal>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo logo--footer"><span class="logo-mark">ॐ</span><span class="logo-text">Sanjeevani Seva</span></div>
+      <p>Serving families with transparent pricing and compassionate guidance.</p>
+      <p class="muted">Helpline: <a href="tel:+91 98765 43210">+91 98765 43210</a><br>Email: <a href="mailto:hello@sanjeevani.seva">hello@sanjeevani.seva</a></p>
+      <div class="socials">
+        <a href="#" aria-label="WhatsApp">WA</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="YouTube">YT</a>
+      </div>
+    </div>
+    <div>
+      <h4>Our Services</h4>
+      <ul class="link-list">
+        <li><a href="/services.html#surgeries">Surgeries</a></li>
+        <li><a href="/services.html#diagnostics">Diagnostics</a></li>
+        <li><a href="/services.html#dialysis">Dialysis & Treatments</a></li>
+        <li><a href="/services.html#checkups">Health Checkups</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Useful Links</h4>
+      <ul class="link-list">
+        <li><a href="/about.html">About Us</a></li>
+        <li><a href="/services.html">Our Services</a></li>
+        <li><a href="/terms.html">Terms & Conditions</a></li>
+        <li><a href="/privacy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Office</h4>
+      <p>Kukatpally, Hyderabad, Telangana</p>
+      <a class="btn btn--small" href="/contact.html">Get in touch</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© Sanjeevani Seva 2025</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

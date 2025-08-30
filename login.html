@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login — Sanjeevani Seva</title>
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+<div class="login-wrap">
+  <div class="card">
+    <div class="logo">ॐ <span>Sanjeevani Seva <span class="badge">Admin</span></span></div>
+    <h1>Welcome back</h1>
+    <p class="notice">Demo credentials:<br><b>admin@sanjeevani.seva</b> / <b>Password@123</b></p>
+    <form id="loginForm">
+      <div class="form-row">
+        <label>Email</label>
+        <input type="email" name="email" required placeholder="you@example.com">
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" name="password" required placeholder="••••••••">
+      </div>
+      <button class="btn btn--primary" type="submit">Sign in</button>
+    </form>
+  </div>
+</div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target).entries());
+  const r = await fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+  if (!r.ok){ alert('Invalid credentials'); return; }
+  location.href = '/admin/dashboard.html';
+});
+</script>
+</body>
+</html>
